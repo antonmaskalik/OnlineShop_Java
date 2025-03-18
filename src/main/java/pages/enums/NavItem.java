@@ -10,5 +10,5 @@ public enum NavItem {
     @DisplayEnumValue("Log in") LOG_IN,
     @DisplayEnumValue("Sign up") SIGN_UP,
     @DisplayEnumValue("Log out") LOG_OUT,
-    @DisplayEnumValue("Welcome ") WELCOME;
+    @DisplayEnumValue("Welcome ") WELCOME
 }
