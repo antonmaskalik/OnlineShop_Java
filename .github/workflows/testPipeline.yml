@@ -37,7 +37,7 @@ jobs:
         shell: bash
 
       - name: Verify remoteRun value
-        run:
+        run: |
           grep '"remoteRun": true' src/main/resources/config.json
         shell: bash
 
