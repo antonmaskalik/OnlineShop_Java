@@ -4,7 +4,6 @@ import configs.ConfigReader;
 import configs.models.ConfigModel;
 import core.TestContext;
 import core.TestContextManager;
-import enums.DriverType;
 import org.testng.annotations.*;
 import core.webDriver.DriverManager;
 import core.listeners.ScreenshotListener;
@@ -18,8 +17,7 @@ public abstract class BaseTest {
     @BeforeMethod
     public void setUp() {
         ConfigModel config = ConfigReader.getDriverConfig();
-        DriverType driverType = DriverType.valueOf(config.getBrowser().toUpperCase());
-        TestContextManager.createContext(driverType);
+        TestContextManager.createContext(config);
         TestContext context = TestContextManager.getContext();
 
         contextThreadLocal.set(context);
