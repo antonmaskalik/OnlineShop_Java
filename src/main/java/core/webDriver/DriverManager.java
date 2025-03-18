@@ -1,14 +1,14 @@
 package core.webDriver;
 
-import enums.DriverType;
+import configs.models.ConfigModel;
 import org.openqa.selenium.WebDriver;
 
 public class DriverManager {
     private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
-    public static void createDriver(DriverType type) {
+    public static void createDriver(ConfigModel config) {
         if (driverThreadLocal.get() == null) {
-            driverThreadLocal.set(DriverFactory.createDriver(type));
+            driverThreadLocal.set(DriverFactory.createDriver(config.getBrowser(), config.IsRemoteRun()));
         }
     }
 

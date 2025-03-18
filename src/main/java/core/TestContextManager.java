@@ -1,12 +1,12 @@
 package core;
 
-import enums.DriverType;
+import configs.models.ConfigModel;
 
 public class TestContextManager {
     private static final ThreadLocal<TestContext> testContextThreadLocal = new ThreadLocal<>();
 
-    public static void createContext(DriverType driverType) {
-        testContextThreadLocal.set(new TestContext(driverType));
+    public static void createContext(ConfigModel config) {
+        testContextThreadLocal.set(new TestContext(config));
     }
 
     public static TestContext getContext() {

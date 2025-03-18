@@ -1,48 +1,63 @@
 package core.webDriver;
 
 import configs.ConfigReader;
-import enums.DriverType;
+import enums.BrowserType;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class DriverFactory {
-    public static WebDriver createDriver(DriverType type) {
+    public static WebDriver createDriver(BrowserType type, boolean isRemote) {
+        if (isRemote) {
+            return createRemoteWebDriver(type);
+        }
+        return createLocalWebDriver(type);
+    }
+
+    private static WebDriver createLocalWebDriver(BrowserType type) {
         return switch (type) {
-            case CHROME -> createChromeDriver();
-            case FIREFOX -> createFirefoxDriver();
-            case EDGE -> createEdgeDriver();
-            case REMOTE -> createRemoteWebDriver();
-            default -> throw new IllegalArgumentException("Unsupported driver type: " + type);
+            case CHROME -> new ChromeDriver(new ChromeOptions());
+            case FIREFOX -> new FirefoxDriver(new FirefoxOptions());
+            case EDGE -> new EdgeDriver();
+            default -> throw new IllegalArgumentException("Unsupported browser type: " + type);
         };
     }
 
-    private static WebDriver createChromeDriver() {
-        ChromeOptions options = new ChromeOptions();
-        return new ChromeDriver(options);
-    }
-
-    private static WebDriver createFirefoxDriver() {
-        FirefoxOptions options = new FirefoxOptions();
-        return new FirefoxDriver(options);
-    }
-
-    private static WebDriver createEdgeDriver() {
-        return new EdgeDriver();
-    }
-
-    private static WebDriver createRemoteWebDriver() {
+    private static WebDriver createRemoteWebDriver(BrowserType type) {
         String hubUrl = ConfigReader.getDriverConfig().getRemoteHubUrl();
-        ChromeOptions options = new ChromeOptions();
+        List<String> options = List.of("--headless");
+
+        MutableCapabilities capabilities = switch (type) {
+            case CHROME -> {
+                ChromeOptions chromeOptions = new ChromeOptions();
+                options.forEach(chromeOptions::addArguments);
+                yield chromeOptions;
+            }
+            case FIREFOX -> {
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                options.forEach(firefoxOptions::addArguments);
+                yield firefoxOptions;
+            }
+            case EDGE -> {
+                EdgeOptions edgeOptions = new EdgeOptions();
+                options.forEach(edgeOptions::addArguments);
+                yield edgeOptions;
+            }
+            default -> throw new IllegalArgumentException("Unsupported browser type for remote execution: " + type);
+        };
+
         try {
-            return new RemoteWebDriver(new URL(hubUrl), options);
+            return new RemoteWebDriver(new URL(hubUrl), capabilities);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Invalid Selenoid URL", e);
         }
