@@ -34,5 +34,10 @@ jobs:
           grep '"remoteRun": true' src/main/resources/config.json
         shell: bash
 
+      - name: Check Selenium Grid availability
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" http://192.168.1.6:4444/wd/hub/status
+        shell: bash
+
       - name: Run UI tests
         run: mvn test
