@@ -25,5 +25,20 @@ jobs:
         run: choco install chromedriver -y
         shell: pwsh
 
+      - name: Check Chrome version
+        run: chrome --version
+        shell: pwsh
+
+      - name: Check ChromeDriver version
+        run: chromedriver --version
+        shell: pwsh
+
       - name: Run UI tests
-        run: mvn test
+        run: mvn clean test
+        
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
