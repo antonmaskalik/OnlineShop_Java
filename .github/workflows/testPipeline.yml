@@ -25,14 +25,6 @@ jobs:
         run: choco install chromedriver -y
         shell: pwsh
 
-      - name: Check Chrome version
-        run: chrome --version
-        shell: pwsh
-
-      - name: Check ChromeDriver version
-        run: chromedriver --version
-        shell: pwsh
-
       - name: Run UI tests
         run: mvn clean test
         
