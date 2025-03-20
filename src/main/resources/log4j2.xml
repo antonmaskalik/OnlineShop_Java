@@ -8,9 +8,9 @@
 
         <!-- RoutingAppender with dynamic routes -->
         <Routing name="RoutingAppender">
-            <Routes pattern="${ctx:testName}">
+            <Routes pattern="${ctx:testName:-default}">
                 <Route key="default">
-                    <File name="DefaultFile" fileName="logs/default.log">
+                    <File name="DynamicFile" fileName="logs/${ctx:testName:-default}.log">
                         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
                     </File>
                 </Route>
