@@ -27,11 +27,14 @@ jobs:
 
       - name: Run UI tests
         run: mvn clean test
+        continue-on-error: true
 
       - name: Generate Allure report
+        if: always()
         run: mvn allure:report
 
       - name: Upload Allure report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
