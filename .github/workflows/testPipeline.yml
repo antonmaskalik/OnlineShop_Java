@@ -20,30 +20,26 @@ jobs:
         - name: Run tests
           run: mvn clean test
 
-        - name: Generate Allure Report
+        - name: Load test report history
+          uses: actions/checkout@v3
           if: always()
-          run: mvn allure:report
+          continue-on-error: true
+          with:
+            ref: gh-pages
+            path: gh-pages
 
-        - name: Upload Allure Report
+        - name: Build test report
+          uses: simple-elf/allure-report-action@v1.7
           if: always()
-          uses: actions/upload-artifact@v3
           with:
-            name: allure-report
-            path: target/site/allure-report
+            gh_pages: gh-pages
+            allure_history: allure-history
+            allure_results: build/allure-results
 
-        - name: Upload Log Files
+        - name: Publish test report
+          uses: peaceiris/actions-gh-pages@v3
           if: always()
-          uses: actions/upload-artifact@v3
           with:
-            name: log-files
-            path: logs/
-
-        - name: Upload Surefire Reports
-          if: failure()
-          uses: actions/upload-artifact@v3
-          with:
-            name: surefire-reports
-            path: target/surefire-reports/
-
-        - name: Display Allure Report Info
-          run: echo "Allure Report uploaded. To view it, download the 'allure-report' artifact and open its index.html file in your browser."
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_branch: gh-pages
+            publish_dir: allure-history
