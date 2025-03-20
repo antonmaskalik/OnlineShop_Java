@@ -2,6 +2,7 @@ package core.webDriver;
 
 import configs.ConfigReader;
 import enums.BrowserType;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,7 +17,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+@Slf4j
 public class DriverFactory {
+
     public static WebDriver createDriver(BrowserType type, boolean isRemote) {
         if (isRemote) {
             return createRemoteWebDriver(type);
@@ -25,6 +28,7 @@ public class DriverFactory {
     }
 
     private static WebDriver createLocalWebDriver(BrowserType type) {
+        log.info("Creating local WebDriver for {} browser", type);
         return switch (type) {
             case CHROME -> new ChromeDriver(new ChromeOptions());
             case FIREFOX -> new FirefoxDriver(new FirefoxOptions());
@@ -36,6 +40,7 @@ public class DriverFactory {
     private static WebDriver createRemoteWebDriver(BrowserType type) {
         String hubUrl = ConfigReader.getDriverConfig().getRemoteHubUrl();
         List<String> options = List.of("--headless");
+        log.info("Creating RemoteWebDriver for {} browser using {} hub URL", type, hubUrl);
 
         MutableCapabilities capabilities = switch (type) {
             case CHROME -> {
@@ -59,6 +64,7 @@ public class DriverFactory {
         try {
             return new RemoteWebDriver(new URL(hubUrl), capabilities);
         } catch (MalformedURLException e) {
+            log.error("Invalid Selenoid URL", e);
             throw new RuntimeException("Invalid Selenoid URL", e);
         }
     }

@@ -1,5 +1,6 @@
 package tests.ui;
 
+import jdk.jfr.Description;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.HomePage;
@@ -11,6 +12,7 @@ public class LogInTests extends BaseTest {
     private static final String password = "123456";
 
     @Test
+    @Description("Verify user log in")
     public void LogInTest() {
         HomePage homePage = getPageFactory().getHomePage();
         LoginPage loginPage = getPageFactory().getLoginPage();
@@ -24,6 +26,7 @@ public class LogInTests extends BaseTest {
     }
 
     @Test
+    @Description("Verify user log out")
     public void LogOutTest() {
         HomePage homePage = getPageFactory().getHomePage();
         LoginPage loginPage = getPageFactory().getLoginPage();
