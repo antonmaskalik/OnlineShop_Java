@@ -6,6 +6,6 @@
         </classes>
     </test>
     <listeners>
-        <listener class-name="core.listeners.ScreenshotListener"/>
+        <listener class-name="core.listeners.TestListener"/>
     </listeners>
 </suite>
