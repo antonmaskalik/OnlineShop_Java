@@ -1,12 +1,12 @@
 package core;
 
-import configs.models.ConfigModel;
+import configs.models.WebDriverConfigModel;
 import org.testng.ITestResult;
 
 public class TestContextManager {
     private static final ThreadLocal<TestContext> testContextThreadLocal = new ThreadLocal<>();
 
-    public static void createContext(ConfigModel config, ITestResult testResult) {
+    public static void createContext(WebDriverConfigModel config, ITestResult testResult) {
         TestContext context = new TestContext(config, testResult);
         testContextThreadLocal.set(context);
     }

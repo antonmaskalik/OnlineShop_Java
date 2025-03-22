@@ -10,12 +10,12 @@
         <Routing name="RoutingAppender">
             <Routes pattern="${ctx:testName}">
                 <Route key="default">
-                    <File name="DefaultFile" fileName="logs/default.log">
+                    <File name="DefaultFile" fileName="logs/default.log" append="false">
                         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
                     </File>
                 </Route>
                 <Route>
-                    <File name="DynamicFile" fileName="logs/${ctx:testName}.log">
+                    <File name="DynamicFile" fileName="logs/${ctx:testName}.log" append="false">
                         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
                     </File>
                 </Route>
