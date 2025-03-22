@@ -3,7 +3,7 @@ package configs.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import enums.BrowserType;
 
-public class ConfigModel {
+public class WebDriverConfigModel {
 
     @JsonProperty("browser")
     private String browser;
@@ -18,7 +18,7 @@ public class ConfigModel {
     private String remoteHubUrl;
 
 
-    public ConfigModel() {
+    public WebDriverConfigModel() {
     }
 
     public BrowserType getBrowser() { return BrowserType.valueOf(browser.toUpperCase()); }

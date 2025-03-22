@@ -1,7 +1,7 @@
 package tests.ui;
 
 import configs.ConfigReader;
-import configs.models.ConfigModel;
+import configs.models.WebDriverConfigModel;
 import core.TestContext;
 import core.TestContextManager;
 import io.qameta.allure.testng.AllureTestNg;
@@ -20,7 +20,7 @@ public abstract class BaseTest {
     public void setUp(ITestResult testResult) {
         ThreadContext.put("testName", testResult.getMethod().getMethodName());
 
-        ConfigModel config = ConfigReader.getDriverConfig();
+        WebDriverConfigModel config = ConfigReader.getDriverConfig();
         TestContextManager.createContext(config, testResult);
         TestContext context = TestContextManager.getContext();
 
@@ -39,10 +39,6 @@ public abstract class BaseTest {
 
         contextThreadLocal.remove();
         pageFactoryThreadLocal.remove();
-    }
-
-    protected TestContext getContext() {
-        return contextThreadLocal.get();
     }
 
     protected PageFactoryManager getPageFactory() {
