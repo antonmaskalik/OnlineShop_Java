@@ -36,11 +36,7 @@ public class ApiClient {
     private Response sendRequest(ApiRequest request) {
         try {
             log.info("Executing request: {}", request);
-            return requestConfigurator
-                    .withQueryParams(request.getQueryParams())
-                    .withHeaders(request.getHeaders())
-                    .withBody(request.getBody())
-                    .send(request.getMethod(), baseUrl, request.getEndpoint());
+            return new RequestConfigurator().send(request, baseUrl);
         } catch (Exception e) {
             log.error("Request execution error: {}. Error: {}", request, e.getMessage(), e);
             throw new ApiException("Request execution error", e);
