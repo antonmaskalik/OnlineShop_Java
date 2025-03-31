@@ -2,6 +2,7 @@ package core.webDriver;
 
 import configs.ConfigReader;
 import enums.BrowserType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -30,9 +31,18 @@ public class DriverFactory {
     private static WebDriver createLocalWebDriver(BrowserType type) {
         log.info("Creating local WebDriver for {} browser", type);
         return switch (type) {
-            case CHROME -> new ChromeDriver(new ChromeOptions());
-            case FIREFOX -> new FirefoxDriver(new FirefoxOptions());
-            case EDGE -> new EdgeDriver();
+            case CHROME -> {
+                WebDriverManager.chromedriver().setup();
+                yield new ChromeDriver(new ChromeOptions());
+            }
+            case FIREFOX -> {
+                WebDriverManager.firefoxdriver().setup();
+                yield new FirefoxDriver(new FirefoxOptions());
+            }
+            case EDGE -> {
+                WebDriverManager.edgedriver().create();
+                yield new EdgeDriver();
+            }
             default -> throw new IllegalArgumentException("Unsupported browser type: " + type);
         };
     }
